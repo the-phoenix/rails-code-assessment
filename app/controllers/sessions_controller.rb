@@ -2,7 +2,8 @@ require 'openssl'
 require 'securerandom'
 
 class SessionsController < ApplicationController
-  skip_before_action :authorized, only: [:new, :create, :welcome, :forgot_password]
+  skip_before_action :authorized,
+                     only: [:new, :create, :welcome, :forgot_password, :reset_password]
 
   def new
   end
@@ -50,5 +51,36 @@ class SessionsController < ApplicationController
     end
   end
 
+  def reset_password
+    reset_pwd_token = params[:token]
+    is_valid, error_description, user = check_token_valid(reset_pwd_token)
+    flash[:error] = error_description
+    puts "***", is_valid, error_description
 
+    if is_valid and params[:password].present?
+      @user = user
+      puts "OHY123!!!!", @user
+      update_payload = params.permit(:password, :password_confirmation)
+               .merge!(reset_password_token: nil, reset_password_sent_at: nil)
+
+      if @user.update(update_payload)
+        flash[:notice] = "Successfully Updated!"
+        redirect_to root_path
+      end
+    end
+  end
+
+  private
+  def check_token_valid(token)
+    now = Time.now.to_i
+    user = User.find_by(reset_password_token: token)
+
+    if user.nil?
+      [:false, "Sorry, this is invalid token!"]
+    elsif (now - user[:reset_password_sent_at].to_i) >= 6 * 3600
+      [:false, "Sorry, this link has expired!"]
+    else
+      [:true, nil, user]
+    end
+  end
 end
