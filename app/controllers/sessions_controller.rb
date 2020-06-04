@@ -1,3 +1,6 @@
+require 'openssl'
+require 'securerandom'
+
 class SessionsController < ApplicationController
   skip_before_action :authorized, only: [:new, :create, :welcome]
 
@@ -24,6 +27,7 @@ class SessionsController < ApplicationController
   end
 
   def forgot_password
+    raw, enc = helpers.generate(:reset_password_token)
     if params[:email].nil?
       flash[:notice] = "Please input your email."
     else
@@ -45,4 +49,6 @@ class SessionsController < ApplicationController
       end
     end
   end
+
+
 end
