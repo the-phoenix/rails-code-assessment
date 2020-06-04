@@ -14,6 +14,8 @@ module SessionsHelper
     loop do
       raw = friendly_token
       enc = OpenSSL::HMAC.hexdigest(@digest, key, raw)
+
+      # avoid duplicated reset password token
       break [raw, enc] unless User.find_by({ column => enc })
     end
   end
