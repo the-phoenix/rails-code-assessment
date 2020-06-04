@@ -44,7 +44,7 @@ class SessionsController < ApplicationController
 
         if @user.save
           flash[:notice] = "We'll send you an email for reset your password."
-          link = "http://localhost:3000/reset_password/" + enc + "/"
+          link = "/reset_password/#{enc}/"
           UserMailer.resetpassword_email(@user, link).deliver
         end
       end
@@ -55,11 +55,9 @@ class SessionsController < ApplicationController
     reset_pwd_token = params[:token]
     is_valid, error_description, user = check_token_valid(reset_pwd_token)
     flash[:error] = error_description
-    puts "***", is_valid, error_description
 
     if is_valid and params[:password].present?
       @user = user
-      puts "OHY123!!!!", @user
       update_payload = params.permit(:password, :password_confirmation)
                .merge!(reset_password_token: nil, reset_password_sent_at: nil)
 
