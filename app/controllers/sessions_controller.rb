@@ -67,16 +67,16 @@ class SessionsController < ApplicationController
   end
 
   private
-  def check_token_valid(token)
-    now = Time.now.to_i
-    user = User.find_by(reset_password_token: token)
+    def check_token_valid(token)
+      now = Time.now.to_i
+      user = User.find_by(reset_password_token: token)
 
-    if user.nil?
-      [:false, "Sorry, this is invalid token!"]
-    elsif (now - user[:reset_password_sent_at].to_i) >= 6 * 3600
-      [:false, "Sorry, this link has expired!"]
-    else
-      [:true, nil, user]
+      if user.nil?
+        [:false, "Sorry, this is invalid token!"]
+      elsif (now - user[:reset_password_sent_at].to_i) >= 6 * 3600
+        [:false, "Sorry, this link has expired!"]
+      else
+        [:true, nil, user]
+      end
     end
-  end
 end

@@ -56,3 +56,5 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem "bcrypt", "~> 3.1"
 
 gem "letter_opener", "~> 1.7", :group => :development
+gem "rspec-rails", "~> 4.0", :groups => [:development, :test]
+gem "rspec_junit_formatter", "~> 0.4.1", :group => :test

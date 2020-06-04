@@ -35,14 +35,13 @@ class UsersController < ApplicationController
   end
 
   private
-  def profile_params
-    params.require(:user).permit(:username)
-  end
+    def profile_params
+      params.require(:user).permit(:username)
+    end
 
-  private
-  def signup_params
-    params
-      .permit(:email, :password, :password_confirmation)
-      .merge!(username: params[:email].split("@")[0])
-  end
+    def signup_params
+      params
+        .permit(:email, :password, :password_confirmation)
+        .merge!(username: params[:email].split("@")[0])
+    end
 end
