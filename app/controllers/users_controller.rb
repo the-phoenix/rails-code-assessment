@@ -27,8 +27,7 @@ class UsersController < ApplicationController
     if profile_params[:username].length < 5
       flash[:notice] = "Username must be at least 5 characters."
     else
-      @user.assign_attributes(profile_params)
-      if @user.save(:validate => false) # avoid password validate
+      if @user.update_attributes(profile_params)
         flash[:notice] = "Successfully Updated!"
       end
     end
