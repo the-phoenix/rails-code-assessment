@@ -12,7 +12,9 @@ Rails.application.routes.draw do
   post 'login', to: 'sessions#create'
 
   get 'logout', to: 'sessions#destroy'
-  get 'authorized', to: 'sessions#page_requires_login'
+
+  get 'forgot_password', to: 'sessions#forgot_password', as: 'forgot_password'
+  post 'forgot_password', to: 'sessions#forgot_password'
 
   get 'welcome', to: 'sessions#welcome', as: 'welcome'
   root 'sessions#welcome'

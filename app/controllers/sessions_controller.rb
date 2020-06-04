@@ -21,6 +21,28 @@ class SessionsController < ApplicationController
   end
 
   def welcome
-    puts session[:user_id]
+  end
+
+  def forgot_password
+    if params[:email].nil?
+      flash[:notice] = "Please input your email."
+    else
+      @user = User.find_by(email: params[:email])
+      if @user.nil?
+        flash[:notice] = "Not existing user!"
+      else
+        flash[:notice] = nil
+        token = Time.now.to_i.to_s
+
+        @user[:reset_password_token] = token
+        @user[:reset_password_sent_at] = token
+
+        if @user.save
+          # link = "http://localhost:3000/resetpassword/" + token + "/"
+          # UserMailer.forgotpassword_email(@user, link).deliver
+          redirect_to root_path
+        end
+      end
+    end
   end
 end

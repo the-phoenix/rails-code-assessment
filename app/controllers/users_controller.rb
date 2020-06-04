@@ -10,6 +10,8 @@ class UsersController < ApplicationController
 
     if @user.errors.blank? # If success
       session[:user_id] = @user.id
+      UserMailer.welcome_email(@user).deliver
+
       redirect_to '/welcome'
     else # if failure
       render 'new'
@@ -17,11 +19,11 @@ class UsersController < ApplicationController
   end
 
   def profile
-    @user = User.find(session[:user_id])
+    @user = current_user
   end
 
   def update_profile
-    @user = User.find(session[:user_id])
+    @user = current_user
     if profile_params[:username].length < 5
       flash[:notice] = "Username must be at least 5 characters."
     else
