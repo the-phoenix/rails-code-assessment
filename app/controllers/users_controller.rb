@@ -12,7 +12,7 @@ class UsersController < ApplicationController
       session[:user_id] = @user.id
       UserMailer.welcome_email(@user).deliver
 
-      redirect_to '/welcome'
+      redirect_to welcome_path
     else # if failure
       render 'new'
     end
