@@ -6,6 +6,7 @@ class SessionsController < ApplicationController
                      only: [:new, :create, :welcome, :forgot_password, :reset_password]
 
   def new
+    # flash[:notice] = nil
   end
 
   def create
@@ -15,7 +16,7 @@ class SessionsController < ApplicationController
       session[:user_id] = @user.id
       redirect_to welcome_path
     else # Or login failure
-      redirect_to login_path
+      redirect_to login_path, flash: { notice: "Invalid credentials" }
     end
   end
 
@@ -30,21 +31,21 @@ class SessionsController < ApplicationController
 
   def forgot_password
     if params[:email].nil?
-      flash[:notice] = "Please input your email."
+      flash.now[:notice] = "Please input your email."
     else
       @user = User.find_by(email: params[:email])
       if @user.nil?
-        flash[:notice] = "Not existing user!"
+        flash.now[:notice] = "Not existing user!"
       else
         raw, enc = helpers.generate(:reset_password_token)
-        flash[:notice] = nil
+        flash.now[:notice] = nil
         current_ts = Time.now.to_i.to_s
 
         @user[:reset_password_token] = enc
         @user[:reset_password_sent_at] = current_ts
 
         if @user.save
-          flash[:notice] = "We'll send you an email for reset your password."
+          flash.now[:notice] = "We'll send you an email for reset your password."
           link = "/reset_password/#{enc}/"
           UserMailer.resetpassword_email(@user, link).deliver
         end
