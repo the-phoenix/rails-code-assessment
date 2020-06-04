@@ -24,12 +24,11 @@ class UsersController < ApplicationController
 
   def update_profile
     @user = current_user
+
     if profile_params[:username].length < 5
       flash[:notice] = "Username must be at least 5 characters."
-    else
-      if @user.update_attributes(profile_params)
-        flash[:notice] = "Successfully Updated!"
-      end
+    elsif @user.update_attributes(profile_params)
+      flash[:notice] = "Successfully Updated!"
     end
 
     render 'profile'

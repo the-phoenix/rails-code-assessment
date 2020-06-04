@@ -30,25 +30,24 @@ class SessionsController < ApplicationController
   end
 
   def forgot_password
-    if params[:email].nil?
-      flash.now[:notice] = "Please input your email."
-    else
-      @user = User.find_by(email: params[:email])
-      if @user.nil?
-        flash.now[:notice] = "Not existing user!"
-      else
-        raw, enc = helpers.generate(:reset_password_token)
-        flash.now[:notice] = nil
-        current_ts = Time.now.to_i.to_s
+    given_email = params[:email]
+    flash.now[:notice] = "Please input your email." if given_email.nil?
 
-        @user[:reset_password_token] = enc
-        @user[:reset_password_sent_at] = current_ts
+    @user = User.find_by(email: given_email) unless given_email.nil?
+    flash.now[:notice] = "Not existing user!" if @user.nil? and given_email
 
-        if @user.save
-          flash.now[:notice] = "We'll send you an email for reset your password."
-          link = "/reset_password/#{enc}/"
-          UserMailer.resetpassword_email(@user, link).deliver
-        end
+    if @user.present?
+      current_ts = Time.now.to_i.to_s
+      _, enc = helpers.generate(:reset_password_token)
+
+      @user[:reset_password_token] = enc
+      @user[:reset_password_sent_at] = current_ts
+
+      if @user.save
+        flash.now[:notice] = "We'll send you an email for reset your password."
+        link = "#{root_url}/reset_password/#{enc}/"
+
+        UserMailer.resetpassword_email(@user, link).deliver
       end
     end
   end

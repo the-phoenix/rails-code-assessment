@@ -4,9 +4,9 @@ class UserMailer < ApplicationMailer
     mail(:to => user.email, :subject => "Welcome to Incubit Assessment Site")
   end
 
-  def resetpassword_email(user, reset_email_path)
+  def resetpassword_email(user, link)
     @user = user
-    @link = root_url + reset_email_path
+    @link = link
     mail(:to => user.email, :subject => "Instruction for reset password")
   end
 end
