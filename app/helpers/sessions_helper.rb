@@ -1,3 +1,6 @@
+require 'openssl'
+require 'securerandom'
+
 module SessionsHelper
   def friendly_token(length = 20)
     # To calculate real characters, we must perform this operation.

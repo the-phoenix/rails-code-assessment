@@ -1,6 +1,3 @@
-require 'openssl'
-require 'securerandom'
-
 class SessionsController < ApplicationController
   skip_before_action :authorized,
                      only: [:new, :create, :welcome, :forgot_password, :reset_password]
