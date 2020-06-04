@@ -15,7 +15,7 @@ RSpec.describe "Users", type: :request do
         expect(User.count).to be(1)
       end
 
-      it 'should fill up username field' do
+      it 'should fill up username with email prefixing' do
         post '/signup', params: params
 
         expect(User.first[:username]).to eql("test")
