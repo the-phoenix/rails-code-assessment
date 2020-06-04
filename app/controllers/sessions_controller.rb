@@ -1,6 +1,6 @@
 class SessionsController < ApplicationController
   skip_before_action :authorized,
-                     only: [:new, :create, :welcome, :forgot_password, :reset_password]
+                     only: [:new, :create, :forgot_password, :reset_password]
 
   def new
     # flash[:notice] = nil
@@ -11,7 +11,7 @@ class SessionsController < ApplicationController
 
     if @user && @user.authenticate(params[:password]) # Login success
       session[:user_id] = @user.id
-      redirect_to welcome_path
+      redirect_to profile_path
     else # Or login failure
       redirect_to login_path, flash: { notice: "Invalid credentials" }
     end
@@ -20,10 +20,7 @@ class SessionsController < ApplicationController
   def destroy
     session[:user_id] = nil
 
-    redirect_to root_path
-  end
-
-  def welcome
+    redirect_to login_path
   end
 
   def forgot_password

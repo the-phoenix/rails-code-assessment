@@ -19,6 +19,5 @@ Rails.application.routes.draw do
   get 'reset_password/:token', to: 'sessions#reset_password', as: 'reset_password'
   post 'reset_password/:token', to: 'sessions#reset_password', as: 'update_password'
 
-  get 'welcome', to: 'sessions#welcome', as: 'welcome'
-  root 'sessions#welcome'
+  root 'users#profile'
 end

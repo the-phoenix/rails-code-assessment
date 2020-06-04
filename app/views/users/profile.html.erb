@@ -21,5 +21,13 @@
   <%= f.label :username %><br>
   <%= f.text_field :username %><br>
 
+  <%= f.label :password, "Password (input only when you want to update password)" %><br>
+  <%= f.password_field :password %><br>
+
+  <%= f.label :password_confirmation %><br>
+  <%= f.password_field :password_confirmation %><br>
+
   <%= f.submit "Update" %>
 <% end %>
+<br/>
+<%=  button_to "Logout", '/logout', method: :get %>

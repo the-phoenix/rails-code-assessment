@@ -12,7 +12,7 @@ class UsersController < ApplicationController
       session[:user_id] = @user.id
       UserMailer.welcome_email(@user).deliver
 
-      redirect_to welcome_path
+      redirect_to profile_path
     else # if failure
       render 'new'
     end
@@ -36,7 +36,7 @@ class UsersController < ApplicationController
 
   private
     def profile_params
-      params.require(:user).permit(:username)
+      params.require(:user).permit(:username, :password, :password_confirmation)
     end
 
     def signup_params
