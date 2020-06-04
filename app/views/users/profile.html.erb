@@ -1,0 +1,25 @@
+<h1>Edit Profile</h1>
+<% if @user.errors.any? %>
+  <div id="error_explanation">
+    <h2>
+      Oops!, we've got <%= pluralize(@user.errors.count, "error") %> from trying profile update
+    </h2>
+    <ul>
+      <% @user.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+<h2><%= notice %></h2>
+
+<%= form_with model: @user, url: profile_path, method: "post", local: true do |f| %>
+<%#= form_with model: @user, local: true do |f| %>
+  <%= f.label :email %><br>
+  <%= f.email_field :email, disabled: 'true' %><br>
+
+  <%= f.label :username %><br>
+  <%= f.text_field :username %><br>
+
+  <%= f.submit "Update" %>
+<% end %>

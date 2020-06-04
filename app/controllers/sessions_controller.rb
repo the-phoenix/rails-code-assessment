@@ -14,16 +14,13 @@ class SessionsController < ApplicationController
     end
   end
 
-  def logout
+  def destroy
     session[:user_id] = nil
 
-    redirect_to '/welcome'
+    redirect_to root_path
   end
 
   def welcome
     puts session[:user_id]
-  end
-
-  def page_requires_login
   end
 end
